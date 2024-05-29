@@ -24,13 +24,12 @@ description: >- # this means to ignore newlines until "baseurl:"
   .
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://yhg.io" # the base hostname & protocol for your site, e.g. http://example.com
-#twitter_username: jekyllrb
+twitter_username: yhgan
 github_username:  ganyinghung
 
 # Build settings
-remote_theme: pages-themes/cayman@v0.2.0
+theme: jekyll-theme-cayman
 plugins:
-  - jekyll-remote-theme
   - jekyll-feed
 
 # Exclude from processing.
