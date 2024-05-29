@@ -28,7 +28,7 @@ twitter_username: yhgan
 github_username:  ganyinghung
 
 # Build settings
-theme: cayman
+theme: minima
 plugins:
   - jekyll-feed
 
