@@ -1,4 +1,6 @@
 ---
 layout: home
-author_profile: true
+title: "{ ...something }"
+header:
+  overlay_image: /assets/images/hero.png
 ---
