@@ -11,15 +11,51 @@ description           : "The personal website of YH Gan."
 baseurl               : "" 
 url                   : "https://yhg.io" 
 email                 : "gan@yhg.io"
-twitter:
-  username            : "yhgan"
 repository            : "ganyinghung"
+
 author:
   name                : "Ying Hung GAN"
-  bio                 : "Someone"
+  bio                 : "Full Stack Web Developer & Researcher"
   location            : "Reading, UK"
+  email               : "gan@yhg.io"
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:gan@yhg.io"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/yhgan"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ganyinghung"
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      url: "https://instagram.com/yhgan"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/in/yhgan"
 
-enable_copy_code_button  : true
+# footer:
+#   links:
+#     - label: "Email"
+#       icon: "fas fa-fw fa-envelope-square"
+#       url: "mailto:gan@yhg.io"
+#     - label: "Twitter"
+#       icon: "fab fa-fw fa-twitter-square"
+#       url: "https://twitter.com/yhgan"
+#     - label: "GitHub"
+#       icon: "fab fa-fw fa-github"
+#       url: "https://github.com/ganyinghung"
+#     - label: "Instagram"
+#       icon: "fab fa-fw fa-instagram"
+#       url: "https://instagram.com/yhgan"
+#     - label: "LinkedIn"
+#       icon: "fab fa-fw fa-linkedin"
+#       url: "https://linkedin.com/in/yhgan"
+
+atom_feed:
+  hide                    : true
+enable_copy_code_button   : true
 
 defaults:
   - scope:
