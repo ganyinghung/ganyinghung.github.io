@@ -56,7 +56,7 @@ COPY src/ .
 
 To keep the source code updated without relying on live mounts, we set up a scheduled task that periodically runs `ROBOCOPY`([The robust file and folder copy](https://ss64.com/nt/robocopy.html)). This command copies any changes from the mounted source directory (e.g., `C:\website`) to `C:\inetpub\wwwroot`, making the latest version of the code available to IIS.
 
-Here is the Powershell script that sets up the scheduled task:
+Here is the PowerShell script that sets up the scheduled task:
 ```powershell
 $action = New-ScheduledTaskAction -WorkingDirectory "c:\windows\system32" -Execute "Robocopy.exe" -Argument "C:\WEBSITE C:\INETPUB\\WWWROOT /S /XF .DS_Store /XD .git"
 $trigger = New-ScheduledTaskTrigger -At (Get-Date) -Once -RepetitionInterval (New-TimeSpan -Minutes 1) -RepetitionDuration (New-TimeSpan -Days 1) 
@@ -90,7 +90,7 @@ This layered file-mapping setup allows the development code to move seamlessly f
 
 ## Installing and Enabling Features
 
-Most of the IIS features, which can be installed and ebabled through Powershell commands, can be included in `Dockerfile`. For example:
+Most of the IIS features, which can be installed and enabled through PowerShell commands, can be included in `Dockerfile`. For example:
 ```Dockerfile
 SHELL ["powershell", "-NoProfile", "-Command"]
 
