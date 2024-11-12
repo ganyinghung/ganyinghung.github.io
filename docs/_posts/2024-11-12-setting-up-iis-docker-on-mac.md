@@ -1,12 +1,9 @@
 ---
 layout: single
 title:  "Setting Up IIS Docker on Mac"
-date:   2024-11-12 00:00:00 +0100
+date:   2024-11-12 12:00:00 +0000
 categories: update
 ---
-
-## Introduction
-
 When working on a legacy application that requires IIS, setting up a development environment on a Mac can present a few challenges. My team faced this recently while making updates to a long-standing app that runs on IIS. Since Docker doesn’t support IIS natively on Mac, we had to find a workaround. Here’s how we set up a local IIS environment using **Docker**, **VirtualBox**, and **Vagrant**.
 
 ## Why Run IIS on a Mac?
