@@ -1,3 +1,5 @@
+# Jekyll doc: https://jekyllrb.com/docs
+# Minimal Mistake theme doc: https://mmistakes.github.io/minimal-mistakes/docs/layouts
 
 locale                : "en-GB"
 remote_theme          : "mmistakes/minimal-mistakes@4.26.1"

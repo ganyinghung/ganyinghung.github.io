@@ -3,7 +3,15 @@ layout: single
 title:  "Setting Up IIS Docker on Mac"
 date:   2024-11-12 12:00:00 +0000
 categories: update
+tagline: "It's like fitting a square peg in a round port"
+toc: true
+toc_sticky: true
+header:
+  overlay_image: /assets/images/shane-rounce-1ZZ96uESRJQ-unsplash.jpg
+  overlay_filter: 0.7
+  caption: "Photo by [Shane Rounce](https://unsplash.com/@shanerounce) on [Unsplash](https://unsplash.com/photos/black-electrical-tower-1ZZ96uESRJQ)"
 ---
+
 When working on a legacy application that requires IIS, setting up a development environment on a Mac can present a few challenges. My team faced this recently while making updates to a long-standing app that runs on IIS. Since Docker doesn’t support IIS natively on Mac, we had to find a workaround. Here’s how we set up a local IIS environment using **Docker**, **VirtualBox**, and **Vagrant**.
 
 ## Why Run IIS on a Mac?
@@ -105,22 +113,77 @@ RUN Add-WebConfiguration "/system.webServer/handlers/@accessPolicy" -Value "Scri
 RUN Add-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' -Filter "system.webServer/staticContent" -Name "." -Value @{ fileExtension='.webp'; mimeType='image/webp' }
 ```
 
-One exception is the **URL rewrite module**. For some reason it can't be installed through `Dockerfile`. So all we do is to download the module first in the `Dockerfile`:
+One exception is the **URL rewrite module**. For some reason it can't be installed through `Dockerfile`. So all we did is to download the module first in the `Dockerfile`:
 ```Dockerfile
 # download the URL rewrite module
 ADD https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi /install/rewrite_amd64.msi
 ```
-And then run the install *after* the container is up:
+And then run the install *after* the container is up, *manually*:
 ```bash
 $ docker compose up -d
 $ docker exec website-docker-iis-1 powershell -NoProfile -Command "msiexec.exe /i C:\\install\\rewrite_amd64.msi /passive"
 ```
 
+## Testing
+
+Note that the address of your IIS site isn’t `localhost`, but rather the IP of the Windows VM hosting IIS, which is the same IP that Docker uses to communication between different contexts. To find this IP, you can run the following command:
+```bash
+$ docker context inspect 2019-box
+```
+
 ## Get Started with the Setup Script
 
-To help you get up and running quickly, I’ve created a bare-bones setup script available on my [GitHub](https://github.com/ganyinghung/iis-docker-on-mac). This script includes the essential configurations for setting up a Windows VM with Docker, configuring file syncs, and preparing the IIS environment. Feel free to clone or fork the repository to adapt it to your specific needs.
+To help you get up and running quickly, I’ve included an example `Dockerfile`, `compose.yaml` and other scripts to this [repository](https://github.com/ganyinghung/iis-docker-on-mac). It includes the essential configurations for setting up a Windows VM with Docker, configuring file syncs, and preparing the IIS environment. Feel free to clone or fork the repository to adapt it to your specific needs.
+
+## Troubleshooting Common Issues
+
+Setting up IIS on a Mac through Docker and a Windows VM can come with a few quirks. Here are some common issues you might encounter and tips on how to resolve them:
+
+### Docker Context Not Switching
+
+Issue: After setting up, Docker commands still execute on the Mac instead of the Windows VM.
+
+Solution: Make sure you’ve switched Docker’s context to the Windows VM by using the correct docker context command. It should be the one you picked in the Vagrant script but you can always verify the current context with:
+```bash
+$ docker context ls
+```
+Double-check that your VM is up and Docker is running within it.
+
+If you got a connection error when trying to `docker compose up`, you may try to provision the VM again:
+```bash
+$ cd window-docker-machine
+$ vagrant provision
+```
+
+### File Changes Not Reflecting in IIS
+
+Issue: Modifications to files on your Mac aren’t showing up in IIS.
+
+Solution: It could be that the PowerShell script `register_task.ps1` hadn't been executed properly. Try to fix any issues, or you can do a manual copy:
+```bash
+$ docker exec website-docker-iis-1 powershell -NoProfile -Command "robocopy C:\\WEBSITE C:\\INETPUB\\WWWROOT /S /XF .DS_Store /XD .git"
+```
+
+### VirtualBox Networking Issues
+
+Issue: The VM isn’t accessible, or Docker on the Mac cannot communicate with the VM.
+
+Solution: Check VirtualBox’s network settings to ensure the VM is on a network that allows host-machine communication, like “Bridged Adapter” mode. Also, verify that firewall settings aren’t blocking Docker’s traffic between the Mac and the VM. 
 
 ## Conclusion
 
 Setting up IIS on a Mac isn’t straightforward due to the lack of native support, but with VirtualBox, Vagrant, and Docker, we managed to create a functional workaround. By using an automated VM setup, a Docker context switch, and file syncing with ROBOCOPY, this setup allows us to maintain a consistent and flexible development environment, enabling easy updates to our legacy application on macOS.
 
+## Useful Links
+
+IIS Docker
+- <http://www.codesin.net/post/Containerise-Legacy-Windows-Apps/>
+- <https://github.com/StefanScherer/windows-docker-machine>
+- <https://github.com/microsoft/iis-docker>
+
+Windows PowerShell and Features
+- <https://learn.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525185(v=vs.90)>
+- <https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/register-scheduledtask?view=windowsserver2019-ps>
+- <https://learn.microsoft.com/en-us/powershell/module/webadministration/add-webconfiguration?view=windowsserver2019-ps>
+- <https://www.iis.net/downloads/microsoft/url-rewrite>
+- <https://ss64.com/nt/robocopy.html>
