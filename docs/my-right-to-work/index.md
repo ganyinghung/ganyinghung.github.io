@@ -3,6 +3,10 @@ layout: single
 title:  "My Right to Work in the UK"
 date:   2025-04-01 16:00:00 +0100
 categories: personal
+header:
+  overlay_image: /assets/images/aleks-marinkovic-RaJJDlGu0x8-unsplash.jpg
+  overlay_filter: 0.7
+  caption: "Photo by [Aleks Marinkovic](https://unsplash.com/@aleks_marinkovic) on [Unsplash](https://unsplash.com/photos/us-a-flag-on-pole-under-blue-sky-during-daytime-RaJJDlGu0x8)"
 ---
 Here is my share code:
 
