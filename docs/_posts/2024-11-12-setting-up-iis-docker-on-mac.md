@@ -2,7 +2,7 @@
 layout: single
 title:  "Setting Up IIS Docker on Mac"
 date:   2024-11-12 12:00:00 +0000
-categories: update
+categories: devops
 tagline: "It's like fitting a square peg in a round port"
 toc: true
 toc_sticky: true
